@@ -1,0 +1,58 @@
+# What needs to be done?
+
+Frontend:
+
+- Entire front end needs to be created
+- What does the web app look like
+    Probably best to make the web app first before I even start to think about the mobile app
+
+Backend:
+
+- Entire backend needs to be created
+- What does the backend even do?
+    - Two thoughts when it comes to the basic functionality
+    - User functionality
+        - Create a user
+        - User log in
+            - What does a user look like?
+                A user will have 
+
+    - Climb functionality
+        - Create a Climb
+            - What does a climb look like?
+                A climb object will have fields such as
+                    climbID/climbName/climbGrade/gymID/setBy/photoOfClimb/videoOfBeta
+                So there needs to be a backend function for creating a climb.
+                createClimb() will take a climb name, gymID, climbPhoto and a setBy value and create an instance and ID.
+                The other parts such as grade and videoOfBeta can be uploaded later
+
+
+
+
+Blueprint of Objects that this app will have:
+
+
+Gyms / Users / Competitions / Climbs
+
+Users are linked to one or many Gyms
+Competitions are linked to one gym
+Climbs are linked to gyms, and can be part of a Competitions
+
+
+Gyms:
+gymID/gymName/climbsList (list of climbs) /competitionsList
+
+Climb:
+climbID/climbName/climbGrade (maybe) /climbSetBy(userID)/climbPhoto/climbBetaVideo (maybe) /competitionID (maybe)
+
+Competitions
+competitionID/compName/compRules (json)/ climbers (list of userID)/ climbs (list of climbs) / leaderboard (maybe, not sure how to work this yet)
+
+Users:
+userID/name/registeredGyms (list of gyms) /registeredCompetitions (list of comps) / setClimbs (list of climbID) / completedClimbs (list of climbID) / role (climber/setter/admin)
+
+
+    
+Plan for the time being,
+
+Have the ability to create a user and create a climb. Then that user can interact with that climb
