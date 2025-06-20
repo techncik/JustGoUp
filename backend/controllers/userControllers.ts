@@ -29,10 +29,23 @@ export const userLogin = async (req: Request, res: Response) => {
         
         // Send the email/password data from the request to the userServices
         // function for logging in. Should return a jwt if successful
-        const token = await userServices.logInUser(email, password);
+        const token = await userServices.loginUser(email, password);
 
         res.status(200).json({message: 'Login successful', token});
     } catch (err) {
         res.status(401).json({error: "Invalid credentials"});
     }
 };
+
+
+
+
+// Need some controlls for users to create a gym maybe? It is a thing that
+// a user can do. But needs confirmation of some sort.
+// Maybe need a gym object?? Not worth passing all the things to this function
+// eg type gymInfo: gymName, gymLocation, adminUser eg eg
+export const userGymRegister = async (req: Request, res: Response) => {
+    try {
+        const {}
+    }
+}

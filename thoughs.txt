@@ -1,3 +1,31 @@
+Journal of Sorts:
+
+20/6/2025. Breakthrough 
+A few weeks ago I set up this project. I planned the basics of the project in my notebook and was ready to hit the ground running. Then I started setting out the basic
+foundations of the project. First I initalised my front end using react and my back end with express. Linked them and set up a prisma database. Dockerised all of it.
+Started adding packages for authentication and ... and ...
+And when I started to write a tiny bit of functionality I just didn't understand what I was doing. I think this is because I am used to write the whole application
+myself. This I have since learned is not the node/react way to do things. React and Node are so big and good because everyone has already done the grunt work for you.
+Rather than writing an encryption algorithm from scratch, I have access to a highly secure one with one import. 
+I realised today that I have to have a different mindset when creating this project. I, as the 'boss' of the project, need to employ packages or 'employees' to do work
+for me. 
+My functions aren't going to be big 100 line functions where I do everything. A function in this project will look more like 
+    export const function = (input) {
+        result = package.doSomethingWithInput(input)
+        resultjson = {
+            result:result
+        }
+        return resultjson
+    }
+
+I think tonight I have made a big breakthrough. The reason why it felt like I didn't know any code for this project was because I don't know any code for this project.
+I need to come to a problem. Think what do I need to fix this problem. Then look for a solution for that problem and use that solution.
+
+Time to start winning.
+
+
+
+
 # What needs to be done?
 
 Frontend:
