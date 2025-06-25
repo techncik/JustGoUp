@@ -19,6 +19,7 @@ model User {
   username  String
   climbs    Climb[]   @relation("UserClimbs")
   createdAt DateTime  @default(now())
+  password  String 
 }
 
 model Climb {

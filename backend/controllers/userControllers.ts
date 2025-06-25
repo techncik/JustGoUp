@@ -8,11 +8,8 @@ import { request } from "http";
 
 export const userRegister = async (req: Request, res: Response) => {
     try {
-        // req.body should present the information in this format.
-        // eg req.body = {username: "abc", email: "abc@email.com", password: "abc123"}
+        // Deconstruct the input data from the request and send to services
         const {username, email, password} = req.body;
-
-        // Send this data to the userServices createUser function and get the
         const newUser = await userServices.createUser({username, email, password});
 
         res.status(201).json({message: 'User created successfully', user: newUser});
@@ -23,19 +20,37 @@ export const userRegister = async (req: Request, res: Response) => {
     }
 };
 
+
+// After using login successfully, user will have a jwt to then perform 
+// auth requiring tasks
 export const userLogin = async (req: Request, res: Response) => {
     try {
+
+        // Deconstruct req.body and send to services loging function
         const {email, password} = req.body;
-        
-        // Send the email/password data from the request to the userServices
-        // function for logging in. Should return a jwt if successful
         const token = await userServices.loginUser(email, password);
 
+        // Send token back in response
         res.status(200).json({message: 'Login successful', token});
     } catch (err) {
         res.status(401).json({error: "Invalid credentials"});
     }
 };
+
+// Function to simply get the user from the database and display info for now
+// They will be authenticated already at this point using jwt
+export const getCurrentUser = async (req: Request, res: Response) => {
+    try {
+
+        const {email} = req.body;
+        const loggedInUser = await userServices.getCurrentUser(email);
+
+        res.status(200).json({message: 'User details retrieved', user: loggedInUser});
+    } catch (err) {
+        // TODO: Change status, invaid credentials will occur in middleware
+        res.status(404).json({error: "User not found"});
+    }
+}
 
 
 

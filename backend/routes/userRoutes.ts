@@ -8,7 +8,7 @@ const router = express.Router();
 /*
 USER PROFILE RELATED ROUTES
 */
-// TODO: Write registerUser function in userControllers. 
+// TODO: Write registerUser function in userControllers. SKIP MIDDLEWARE FOR NOW
 // this post request will be called after user clicks on register button
 router.post('/userRegister', userControllers.userRegister);
 
@@ -19,7 +19,7 @@ router.post('/login', userControllers.userLogin);
 // TODO: Write the requireAuth middleware and getCurrentUser function
 // This get request will be used initially just for testing, but could
 // eventually be turned into a function to help display a users profile
-router.get('/me', requireAuth, getCurrentUser);
+router.get('/me', requireAuth, userControllers.getCurrentUser);
 
 /*
 USER CLIMB RELATED ROUTES
