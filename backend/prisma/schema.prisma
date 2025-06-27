@@ -18,6 +18,7 @@ model User {
   email     String    @unique
   username  String
   climbs    Climb[]   @relation("UserClimbs")
+  gymsOwned Gym[]     @relation("GymOwners")
   createdAt DateTime  @default(now())
   password  String 
 }
@@ -25,8 +26,15 @@ model User {
 model Climb {
   id        String    @id @default(cuid())
   name      String
-  grade     String
+  grade     Int
   setterId  String
   setter    User      @relation("UserClimbs", fields: [setterId], references: [id])
   createdAt DateTime  @default(now())
+}
+
+model Gym {
+  id        String    @id @default(cuid())
+  name      String
+  owners    User[]    @relation("GymOwners")
+  gymInfo   Json
 }

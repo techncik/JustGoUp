@@ -45,13 +45,35 @@ export const loginUser = async(email: string, password: string) => {
     return token;
 };
 
-// Simply find a user and return the user
-export const  getCurrentUser = async(email: string) => {
+export const userDelete = async(id: string) => {
+    /*
+TODO: ADD SOME SORT OF CHECK TO MAKE SURE USER WANTS TO DELETE
+    */
+    const deletedUser = await primsa.user.delete({
+        where: {id: id,},
+    })
+    if (!deletedUser) {
+        throw new Error('User not found');
+    }
+    return;
+}
 
-    const user = await prisma.user.findUnique({where: {email}});
+// Simply find a user and return the user
+export const getCurrentUser = async(id: string) => {
+
+    const user = await prisma.user.findUnique({where: {id}});
     if (!user) {
         throw new Error('User not found');
     }
 
     return user;
+}
+
+export const userInfoUpdate = async(id: string) => {
+
+    // Get user object
+    const user = await prisma.user.findUnique({where: {id}});
+    if (!user) {
+        throw new Error('User not found');
+    }
 }

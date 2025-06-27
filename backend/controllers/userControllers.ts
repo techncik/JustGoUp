@@ -37,11 +37,23 @@ export const userLogin = async (req: Request, res: Response) => {
     }
 };
 
+// Function to delete a user
+export const userDelete = async (req: Request, res: Response) => {
+    try {
+        // Req.body should contain the user object
+        const {id} = req.body;
+        await userServices.userDelete(id);
+
+        res.status(200).json({message: 'User deleted successfully'});
+    } catch (err) {
+        res.status(401).json({error: "Not allowed"});
+    }
+};
+
 // Function to simply get the user from the database and display info for now
 // They will be authenticated already at this point using jwt
 export const getCurrentUser = async (req: Request, res: Response) => {
     try {
-
         const {email} = req.body;
         const loggedInUser = await userServices.getCurrentUser(email);
 
@@ -50,17 +62,4 @@ export const getCurrentUser = async (req: Request, res: Response) => {
         // TODO: Change status, invaid credentials will occur in middleware
         res.status(404).json({error: "User not found"});
     }
-}
-
-
-
-
-// Need some controlls for users to create a gym maybe? It is a thing that
-// a user can do. But needs confirmation of some sort.
-// Maybe need a gym object?? Not worth passing all the things to this function
-// eg type gymInfo: gymName, gymLocation, adminUser eg eg
-export const userGymRegister = async (req: Request, res: Response) => {
-    try {
-        const {}
-    }
-}
+};
