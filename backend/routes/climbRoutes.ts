@@ -1,11 +1,15 @@
 import express from 'express';
+import { requireAuth } from '../middleware/requireAuth';
+import * as climbControllers from '../controllers/climbControllers';
 
 const router = express.Router();
 
-// Two different climb create post requests. One for official gym climbs and
-// one for user created climbs
-router.post('/climbCreateUser', requireAuth, climbControllers.climbCreateUser);
-router.post('/climbCreateSetter', requireAuth, climbControllers.climbCreateSetter);
+// Endpoint to create a climb. Differentiating between user and setter will
+// be done within services
+router.post('/climbCreate', requireAuth, climbControllers.climbCreate);
+
+router.post('/climbTick', requireAuth, climbControllers.climbTick);
 
 router.post('/climbInfoUpdate', requireAuth, climbControllers.climbInfoUpdate);
+
 export default router;

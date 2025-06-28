@@ -69,7 +69,9 @@ export const getCurrentUser = async(id: string) => {
     return user;
 }
 
-export const userInfoUpdate = async(id: string) => {
+export const userInfoUpdate = async(
+    id: string
+) => {
 
     // Get user object
     const user = await prisma.user.findUnique({where: {id}});
@@ -77,3 +79,15 @@ export const userInfoUpdate = async(id: string) => {
         throw new Error('User not found');
     }
 }
+
+export const userTickClimb = async(
+    id: string,
+    climbId: string
+) => {
+
+    const updateUser = await prisma.user.update({
+        where: {id},
+        data: {}
+    })
+
+};

@@ -1,0 +1,68 @@
+Todo Tasks:
+
+FrontEnd:
+
+Everything at the moment. No frontend created
+
+
+
+
+
+
+BackEnd:
+
+USERS
+
+[x] Create user (CREATE)
+    [x] Route
+    [x] Controller function
+    [x] Services function
+    [] Tested
+[x] Log in user (CREATE)
+    [x] Route
+    [x] Controller function
+    [x] Services function
+    [] Tested
+[x] Delete user (DELETE)
+    [x] Route
+    [x] Controller function
+    [x] Services function
+    [] Tested
+[x] Get user object from id (READ)
+    [x] Route
+    [x] Controller function
+    [x] Services function
+    [] Tested    
+[] Update user info (UPDATE)
+    [] Route
+    [] Controller function
+    [] Services function
+    [] Tested
+[] Tick a climb (CREATE)
+    [x] Route
+    [x] Controller
+    [] Services
+    [] Tested
+
+CLIMBS
+
+[] Create climb (CREATE)
+    [x] Route
+    [x] Controller
+    [x] Services
+    [] Tested
+[] Delete a climb (DELETE)
+    [] Route
+    [] Controller
+    [] Services
+    [] Tested
+[] Update/Add climb info (UPDATE)
+    [] Route
+    [] Controller
+    [] Services
+    [] Tested
+[] Get climb info (READ)
+    [] Route
+    [] Controller
+    [] Services
+    [] Tested

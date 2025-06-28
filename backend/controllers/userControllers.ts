@@ -54,12 +54,23 @@ export const userDelete = async (req: Request, res: Response) => {
 // They will be authenticated already at this point using jwt
 export const getCurrentUser = async (req: Request, res: Response) => {
     try {
-        const {email} = req.body;
-        const loggedInUser = await userServices.getCurrentUser(email);
+        const {id} = req.body;
+        const loggedInUser = await userServices.getCurrentUser(id);
 
         res.status(200).json({message: 'User details retrieved', user: loggedInUser});
     } catch (err) {
         // TODO: Change status, invaid credentials will occur in middleware
         res.status(404).json({error: "User not found"});
+    }
+};
+
+export const userTickClimb = async (req: Request, res: Response) => {
+    try {
+        const {id, climbId} = req.body;
+        const tickedClimb = await userServices.userTickClimb(id, climbId);
+
+        res.status(202).json({message: 'Ticked climb successfully'});
+    } catch (err) {
+        res.status(400).json({error: 'Unsuccessful climb tick'});
     }
 };

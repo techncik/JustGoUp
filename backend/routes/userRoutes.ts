@@ -23,4 +23,7 @@ router.get('/getCurrentUser', requireAuth, userControllers.getCurrentUser);
 
 router.put('/userInfoUpdate', requireAuth, userControllers.userInfoUpdate);
 
+
+router.put('/userTickClimb', requireAuth, userControllers.userTickClimb);
+
 export default router;
