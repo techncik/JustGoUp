@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PublicUser, UserCreateInput, UserLoginInput } from "../types/userTypes";
+import { UserPublic, UserCreateInput, UserLoginInput, LoginPublic, UserDeleteInput, UserDeleteOutput, UserTickClimb, TickClimbOutput} from "../types/userTypes";
 import prisma from "../prisma";
 
 const primsa = new PrismaClient();
@@ -9,7 +9,7 @@ const primsa = new PrismaClient();
 
 export const userCreate = async (
     input: UserCreateInput
-): Promise<PublicUser> => {
+): Promise<UserPublic> => {
     // hash password. temporary for development
     const hashedPassword = await bcrypt.hash(input.password, 10);
     // Creates new user in prisma user table
@@ -26,52 +26,57 @@ export const userCreate = async (
 }
 
 
-export const userLogin = async({
-    email,
-    password
-}: UserLoginInput) => {
+export const userLogin = async(
+    input: UserLoginInput
+): Promise<LoginPublic> => {
 
     // Find if the email exists in database
-    const user = await primsa.user.findUnique({ where: {email}});
+    const user = await primsa.user.findUnique({ where: {email: input.email}});
     if (!user) {
         throw new Error('User not found');
     }
-    /* Just need to migrate new prisma user type for this to not redline
-     TODO: Remember, password func is temporary only for development
-    */
+    
     // Check if password matches password saved in DB (BAD TO SAVE PASSWORD)!!
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(input.password, user.password);
     if (!isPasswordValid) {
         throw new Error('Invalid Password');
     }
     // If email and password match, assign user a jwt and return
     const token = jwt.sign({ userId: user.id}, 'your_jwt_secret', {expiresIn: '1h'});
-
-    return token;
+    const output = {id: user.id, token, username: user.username};
+    return output;
 };
 
-export const userDelete = async(id: string) => {
+export const userDelete = async(
+    input: UserDeleteInput
+): Promise<UserDeleteOutput> => {
     /*
 TODO: ADD SOME SORT OF CHECK TO MAKE SURE USER WANTS TO DELETE
     */
-    const deletedUser = await primsa.user.delete({
-        where: {id: id,},
-    })
-    if (!deletedUser) {
-        throw new Error('User not found');
-    }
-    return;
-}
-
-// Simply find a user and return the user
-export const getCurrentUser = async(id: string) => {
-
-    const user = await prisma.user.findUnique({where: {id}});
+    const user = await prisma.user.findUnique({
+    where: {id: input.id}
+    });
     if (!user) {
         throw new Error('User not found');
     }
+    await prisma.user.delete({
+        where: {id: input.id}
+    });
+    
+    return {message: 'User successfully deleted', deletedUserId: input.id};
+}
 
-    return user;
+// Simply find a user and return the user
+export const getCurrentUser = async(
+    userId: string
+): Promise<UserPublic> => {
+
+    const user = await prisma.user.findUnique({where: {id: userId}});
+    if (!user) {
+        throw new Error('User not found');
+    }
+    const { password, ...safeUser} = user;
+    return safeUser;
 }
 
 export const userInfoUpdate = async(
@@ -90,19 +95,18 @@ export const userInfoUpdate = async(
 // This function is passed id and climbId. Id should correlate to the users
 // id, and climb id is the idea of the climb they are ticking.
 export const userTickClimb = async(
-    id: string,
-    climbId: string
-) => {
+    input: UserTickClimb
+): Promise<TickClimbOutput> => {
 
     // This query should find a user in the db, and then push the climbId to
     // their ticked climbs list
     const updateUser = await prisma.user.update({
         where: {
-            id
+            id: input.id
         },
         data: {
-            tickedId: {
-                push: climbId,
+            tickedId: { //TODO Believe this error just comes from prisma not being migrated
+                push: input.climbId,
             },
         },
     })
@@ -110,4 +114,5 @@ export const userTickClimb = async(
     if (!updateUser) {
         throw new Error('Something went wrong');
     }
+    return {message: 'Climb successfully ticked'};
 };

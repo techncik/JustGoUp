@@ -10,6 +10,6 @@ router.post('/climbCreate', requireAuth, climbControllers.climbCreate);
 
 router.delete('/climbDelete', requireAuth, climbControllers.climbDelete);
 
-router.post('/climbInfoUpdate', requireAuth, climbControllers.climbInfoUpdate);
+router.put('/climbEdit', requireAuth, climbControllers.climbEdit);
 
 export default router;

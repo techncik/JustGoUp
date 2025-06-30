@@ -1,32 +1,32 @@
 import { PrismaClient} from "@prisma/client";
-import prisma from "../prisma";
-import { CreateClimbInput, ClimbDeleteInput } from "../types/climbTypes";
+import { ClimbCreateInput, ClimbDeleteInput, ClimbDeleteOutput, ClimbEditInput, ClimbEditOutput } from "../types/climbTypes";
 
 const prisma = new PrismaClient();
 
-export const climbCreate = async ({climbName, setterId, grade}: CreateClimbInput) => {
+export const climbCreate = async (
+    input: ClimbCreateInput
+) => {
     /*
 TODO: Differentiate between a user climb and a setter climb
     */
     const newClimb = await prisma.climb.create({
         data: {
-            name: climbName,
-            setterId: setterId,
-            grade: grade,
+            name: input.climbName,
+            setterId: input.setterId,
+            grade: input.grade,
         },
     });
 
-    return newClimb;
+    return {message: 'New climb created', newClimb};
 }
 
 
-export const climbDelete = async ({
-    climbId, setterId
-    }: ClimbDeleteInput   
-) => {
+export const climbDelete = async (
+    input: ClimbDeleteInput   
+): Promise<ClimbDeleteOutput> => {
 
     const climbToBeDeleted = await prisma.climb.findUnique({
-        where: {id: climbId}
+        where: {id: input.climbId}
     });
 
     if (!climbToBeDeleted) {
@@ -34,16 +34,36 @@ export const climbDelete = async ({
     }
 
     // Add a check to see if the user is in the gymOwners list
-    if (climbToBeDeleted.setterId != setterId) {
+    if (climbToBeDeleted.setterId != input.setterId) {
         throw new Error('Cannot delete another users climb');
     }
 
     // Delete the climb
     await prisma.climb.delete({
-        where: {id: climbId}
+        where: {id: input.climbId}
     });
 
-    return;
+    return {message: 'Climb deleted successfully'};
+}
+
+// Need a way to get a climb from climbId so that I can edit the same climb
+// The way it is, if I am changing the name of the climb, then we won't find
+// it in the db as the input.climbName will have a different value to the
+// climb in the db
+export const climbGet = async () {
+    
+}
+
+// For now just implementing a fairly inefficient edit. Will just check each
+// field and change it if the input is different
+export const climbEdit = async (
+    input: ClimbEditInput
+): Promise<ClimbEditOutput> => {
+
+    const climbToEdit = await prisma.climb.findUnique({
+        where: {name: input.climbName}
+    })
+
 }
 
 

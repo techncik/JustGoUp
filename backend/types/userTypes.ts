@@ -14,7 +14,12 @@ export interface UserLoginInput {
 }
 
 export interface UserDeleteInput {
+    id: string;
+}
 
+export interface UserTickClimb {
+    id: string;
+    climbId: string;
 }
 
 
@@ -23,9 +28,25 @@ export interface UserDeleteInput {
 User function return types
 */
 
-export interface PublicUser {
+// Return type for creating an account
+export interface UserPublic {
     id: string;
     email: string;
     username: string;
     createdAt: Date
+}
+// Return type when logging in
+export interface LoginPublic {
+    id: string;
+    token: string;
+    username: string;
+}
+
+export interface UserDeleteOutput {
+    message: string;
+    deletedUserId: string;
+}
+
+export interface TickClimbOutput {
+    message: string;
 }

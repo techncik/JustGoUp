@@ -1,6 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
 import * as climbServices from "../services/climbServices";
+import { ClimbCreateInput, ClimbDeleteInput, ClimbEditInput } from "../types/climbTypes";
 
 
 
@@ -29,14 +30,15 @@ export const climbCreate = async (req: Request, res: Response) => {
 // either:
 // -created the climb
 // -is a gym owner
-export const climbDelete = async (req: Request, res: Response) => {
+export const climbDelete = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
 
     try {
-        const {climbId, userId} = req.body;
-        const deletedClimb = await climbServices.climbDelete({
-            climbId,
-            userId
-        });
+        const climb:ClimbDeleteInput = req.body;
+        await climbServices.climbDelete(climb);
+
         res.status(200).json({message: 'Climb deleted successfully'});
     } catch (err) {
         res.status(400).json({error: "Problem deleting the climb"});
@@ -44,3 +46,17 @@ export const climbDelete = async (req: Request, res: Response) => {
 };
 
 
+export const climbEdit = async (
+    req: Request,
+    res: Response
+): Promise<void> => {
+
+    try {
+        const climb:ClimbEditInput = req.body;
+        await climbServices.climbEdit(climb);
+
+        res.status(200).json({message: 'Climb successfully edited'});
+    } catch (err) {
+        res.status(400).json({error: 'Problem editing the climb'});
+    }
+}

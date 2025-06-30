@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import * as userServices from '../services/userServices'
 import { error } from "console";
 import { request } from "http";
-import { UserCreateInput, UserLoginInput } from "../types/userTypes";
+import { UserCreateInput, UserDeleteInput, UserLoginInput, UserTickClimb } from "../types/userTypes";
 
 // Controllers should only handle web specific things. Business logic
 // can go into services
@@ -42,8 +42,8 @@ export const userLogin = async (req: Request, res: Response) => {
 export const userDelete = async (req: Request, res: Response) => {
     try {
         // Req.body should contain the user object
-        const {id} = req.body;
-        await userServices.userDelete(id);
+        const user:UserDeleteInput = req.body;
+        await userServices.userDelete(user);
 
         res.status(200).json({message: 'User deleted successfully'});
     } catch (err) {
@@ -55,8 +55,12 @@ export const userDelete = async (req: Request, res: Response) => {
 // They will be authenticated already at this point using jwt
 export const getCurrentUser = async (req: Request, res: Response) => {
     try {
-        const {id} = req.body;
-        const loggedInUser = await userServices.getCurrentUser(id);
+        const userId = req.user?.id;
+        if (!userId) {
+            return res.status(401).json({error: 'Not authorized'});
+        }
+
+        const loggedInUser = await userServices.getCurrentUser(userId);
 
         res.status(200).json({message: 'User details retrieved', user: loggedInUser});
     } catch (err) {
@@ -67,8 +71,9 @@ export const getCurrentUser = async (req: Request, res: Response) => {
 
 export const userTickClimb = async (req: Request, res: Response) => {
     try {
-        const {id, climbId} = req.body;
-        const tickedClimb = await userServices.userTickClimb(id, climbId);
+
+        const tickClimb: UserTickClimb = req.body;
+        const tickedClimb = await userServices.userTickClimb(tickClimb);
 
         res.status(202).json({message: 'Ticked climb successfully'});
     } catch (err) {
