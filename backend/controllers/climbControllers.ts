@@ -1,5 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
+import * as climbServices from "../services/climbServices";
+
 
 
 // Need to define what sort of information creating a climb will come with
@@ -8,9 +10,11 @@ import { Request, Response } from "express";
 export const climbCreate = async (req: Request, res: Response) => {
     try {
         const {climbName, setterId, grade} = req.body;
-        const newClimb = await climbServices.climbCreate(
-            climbName, setterId, grade
-        );
+        const newClimb = await climbServices.climbCreate({
+            climbName,
+            setterId, 
+            grade
+        });
         res.status(200).json({messasge: 'Climb created successfully'});
     } catch (err) {
         /*
@@ -20,3 +24,23 @@ export const climbCreate = async (req: Request, res: Response) => {
         res.status(400).json({error: 'Error creating climb'});
     }
 };
+
+// To delete a climb, we probably need to check if the user deleting the climb
+// either:
+// -created the climb
+// -is a gym owner
+export const climbDelete = async (req: Request, res: Response) => {
+
+    try {
+        const {climbId, userId} = req.body;
+        const deletedClimb = await climbServices.climbDelete({
+            climbId,
+            userId
+        });
+        res.status(200).json({message: 'Climb deleted successfully'});
+    } catch (err) {
+        res.status(400).json({error: "Problem deleting the climb"});
+    }
+};
+
+

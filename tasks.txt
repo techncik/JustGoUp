@@ -41,7 +41,7 @@ USERS
 [] Tick a climb (CREATE)
     [x] Route
     [x] Controller
-    [] Services
+    [x] Services  
     [] Tested
 
 CLIMBS
@@ -52,9 +52,9 @@ CLIMBS
     [x] Services
     [] Tested
 [] Delete a climb (DELETE)
-    [] Route
-    [] Controller
-    [] Services
+    [x] Route
+    [x] Controller
+    [x] Services
     [] Tested
 [] Update/Add climb info (UPDATE)
     [] Route
@@ -66,3 +66,6 @@ CLIMBS
     [] Controller
     [] Services
     [] Tested
+
+
+[] Refactoring all existing code to include better typechecking for inputs and returns

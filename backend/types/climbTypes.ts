@@ -3,3 +3,8 @@ export interface CreateClimbInput {
     setterId: string;
     grade: number;
 }
+
+export interface ClimbDeleteInput {
+    climbId: string;
+    setterId: string;
+}

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as userServices from '../services/userServices'
 import { error } from "console";
 import { request } from "http";
+import { UserCreateInput, UserLoginInput } from "../types/userTypes";
 
 // Controllers should only handle web specific things. Business logic
 // can go into services
@@ -9,8 +10,8 @@ import { request } from "http";
 export const userRegister = async (req: Request, res: Response) => {
     try {
         // Deconstruct the input data from the request and send to services
-        const {username, email, password} = req.body;
-        const newUser = await userServices.createUser({username, email, password});
+        const userCreateData: UserCreateInput = req.body;
+        const newUser = await userServices.userCreate(userCreateData);
 
         res.status(201).json({message: 'User created successfully', user: newUser});
     } catch (err) {
@@ -27,8 +28,8 @@ export const userLogin = async (req: Request, res: Response) => {
     try {
 
         // Deconstruct req.body and send to services loging function
-        const {email, password} = req.body;
-        const token = await userServices.loginUser(email, password);
+        const userLoginData: UserLoginInput = req.body;
+        const token = await userServices.userLogin(userLoginData);
 
         // Send token back in response
         res.status(200).json({message: 'Login successful', token});

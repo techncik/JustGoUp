@@ -1,11 +1,10 @@
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient} from "@prisma/client";
 import prisma from "../prisma";
-import { CreateClimbInput } from "../types/climbTypes";
-import { climbCreate } from "../controllers/climbControllers";
+import { CreateClimbInput, ClimbDeleteInput } from "../types/climbTypes";
 
 const prisma = new PrismaClient();
 
-export const createClimb = async ({climbName, setterId, grade}: CreateClimbInput) => {
+export const climbCreate = async ({climbName, setterId, grade}: CreateClimbInput) => {
     /*
 TODO: Differentiate between a user climb and a setter climb
     */
@@ -20,10 +19,32 @@ TODO: Differentiate between a user climb and a setter climb
     return newClimb;
 }
 
-// A climb will have the ability to be ticked by a user. A climb calls this
-// method and updates the users ticked climbs
 
-// Might be better to do this from the user but not sure
-export const climbTick = async(user: User) =>
+export const climbDelete = async ({
+    climbId, setterId
+    }: ClimbDeleteInput   
+) => {
+
+    const climbToBeDeleted = await prisma.climb.findUnique({
+        where: {id: climbId}
+    });
+
+    if (!climbToBeDeleted) {
+        throw new Error('Climb not found');
+    }
+
+    // Add a check to see if the user is in the gymOwners list
+    if (climbToBeDeleted.setterId != setterId) {
+        throw new Error('Cannot delete another users climb');
+    }
+
+    // Delete the climb
+    await prisma.climb.delete({
+        where: {id: climbId}
+    });
+
+    return;
+}
+
 
 

@@ -8,7 +8,7 @@ const router = express.Router();
 // be done within services
 router.post('/climbCreate', requireAuth, climbControllers.climbCreate);
 
-router.post('/climbTick', requireAuth, climbControllers.climbTick);
+router.delete('/climbDelete', requireAuth, climbControllers.climbDelete);
 
 router.post('/climbInfoUpdate', requireAuth, climbControllers.climbInfoUpdate);
 

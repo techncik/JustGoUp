@@ -1,30 +1,35 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { CreateUserInput } from "../types/userTypes";
+import { PublicUser, UserCreateInput, UserLoginInput } from "../types/userTypes";
 import prisma from "../prisma";
 
 const primsa = new PrismaClient();
 
 
-export const createUser = async ({username, email, password}: CreateUserInput) => {
+export const userCreate = async (
+    input: UserCreateInput
+): Promise<PublicUser> => {
     // hash password. temporary for development
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(input.password, 10);
     // Creates new user in prisma user table
     const user = await primsa.user.create({
         data: {
-            username: username,
-            email: email,
-            password: hashedPassword,
+            ...input,
+            password: hashedPassword
         },
     });
 
-    return user;
-
+    // Take password out of user and store the rest in safeUser
+    const { password, ...safeUser } = user;
+    return safeUser;
 }
 
 
-export const loginUser = async(email: string, password: string) => {
+export const userLogin = async({
+    email,
+    password
+}: UserLoginInput) => {
 
     // Find if the email exists in database
     const user = await primsa.user.findUnique({ where: {email}});
@@ -80,14 +85,29 @@ export const userInfoUpdate = async(
     }
 }
 
+// A user will be calling this. So we find in the db that user, and update
+// their climbId list with the climbs id
+// This function is passed id and climbId. Id should correlate to the users
+// id, and climb id is the idea of the climb they are ticking.
 export const userTickClimb = async(
     id: string,
     climbId: string
 ) => {
 
+    // This query should find a user in the db, and then push the climbId to
+    // their ticked climbs list
     const updateUser = await prisma.user.update({
-        where: {id},
-        data: {}
+        where: {
+            id
+        },
+        data: {
+            tickedId: {
+                push: climbId,
+            },
+        },
     })
-
+    
+    if (!updateUser) {
+        throw new Error('Something went wrong');
+    }
 };
