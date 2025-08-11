@@ -1,4 +1,4 @@
-import { Climb } from "@prisma/client";
+import { Climb, User } from "@prisma/client";
 
 /*
 Climb input types
@@ -36,4 +36,14 @@ export interface ClimbDeleteOutput {
 export interface ClimbEditOutput {
     message: string;
     climb: Climb;
+}
+
+// Matches prisma schema definition of a climb
+export interface ClimbGetOutput {
+    id: string;
+    name: string;
+    grade: number;
+    setterId: string;
+    //setter: User;
+    createdAt: Date;
 }

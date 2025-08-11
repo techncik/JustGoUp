@@ -10,8 +10,10 @@ const primsa = new PrismaClient();
 export const userCreate = async (
     input: UserCreateInput
 ): Promise<UserPublic> => {
-    // hash password. temporary for development
+
+    // hash password. TEMP for development
     const hashedPassword = await bcrypt.hash(input.password, 10);
+
     // Creates new user in prisma user table
     const user = await primsa.user.create({
         data: {
@@ -19,6 +21,8 @@ export const userCreate = async (
             password: hashedPassword
         },
     });
+
+    // TODO: Log new user in
 
     // Take password out of user and store the rest in safeUser
     const { password, ...safeUser } = user;

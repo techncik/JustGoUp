@@ -7,7 +7,10 @@ import { UserCreateInput, UserDeleteInput, UserLoginInput, UserTickClimb } from 
 // Controllers should only handle web specific things. Business logic
 // can go into services
 
-export const userRegister = async (req: Request, res: Response) => {
+export const userRegister = async (
+    req: Request,
+    res: Response
+) => {
     try {
         // Deconstruct the input data from the request and send to services
         const userCreateData: UserCreateInput = req.body;
@@ -24,7 +27,10 @@ export const userRegister = async (req: Request, res: Response) => {
 
 // After using login successfully, user will have a jwt to then perform 
 // auth requiring tasks
-export const userLogin = async (req: Request, res: Response) => {
+export const userLogin = async (
+    req: Request, 
+    res: Response
+) => {
     try {
 
         // Deconstruct req.body and send to services loging function
@@ -39,7 +45,10 @@ export const userLogin = async (req: Request, res: Response) => {
 };
 
 // Function to delete a user
-export const userDelete = async (req: Request, res: Response) => {
+export const userDelete = async (
+    req: Request, 
+    res: Response
+) => {
     try {
         // Req.body should contain the user object
         const user:UserDeleteInput = req.body;
@@ -53,8 +62,12 @@ export const userDelete = async (req: Request, res: Response) => {
 
 // Function to simply get the user from the database and display info for now
 // They will be authenticated already at this point using jwt
-export const getCurrentUser = async (req: Request, res: Response) => {
+export const getCurrentUser = async (
+    req: Request, 
+    res: Response
+) => {
     try {
+        // This just checks if this is called by a user
         const userId = req.user?.id;
         if (!userId) {
             return res.status(401).json({error: 'Not authorized'});
