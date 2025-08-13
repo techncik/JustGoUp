@@ -85,10 +85,11 @@ export const getCurrentUser = async (
 export const userTickClimb = async (req: Request, res: Response) => {
     try {
 
-        const tickClimb: UserTickClimb = req.body;
+        const tickClimb: UserTickClimb = req.body; // id and climbId
+        
         const tickedClimb = await userServices.userTickClimb(tickClimb);
 
-        res.status(202).json({message: 'Ticked climb successfully'});
+        res.status(202).json({message: 'Ticked climb successfully', climb: tickedClimb});
     } catch (err) {
         res.status(400).json({error: 'Unsuccessful climb tick'});
     }

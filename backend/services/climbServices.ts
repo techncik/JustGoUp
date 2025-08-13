@@ -50,25 +50,25 @@ export const climbDelete = async (
 // The way it is, if I am changing the name of the climb, then we won't find
 // it in the db as the input.climbName will have a different value to the
 // climb in the db
-export const climbGet = async (
+// export const climbGet = async (
 
-): Promise<ClimbGetOutput> => {
+// ): Promise<ClimbGetOutput> => {
 
-    const climb: ClimbGetOutput = await prisma.climb.
+//     const climb: ClimbGetOutput = await prisma.climb.
     
-};
+// };
 
-// For now just implementing a fairly inefficient edit. Will just check each
-// field and change it if the input is different
-export const climbEdit = async (
-    input: ClimbEditInput
-): Promise<ClimbEditOutput> => {
+// // For now just implementing a fairly inefficient edit. Will just check each
+// // field and change it if the input is different
+// export const climbEdit = async (
+//     input: ClimbEditInput
+// ): Promise<ClimbEditOutput> => {
 
-    const climbToEdit = await prisma.climb.findUnique({
-        where: {name: input.climbName}
-    })
+//     const climbToEdit = await prisma.climb.findUnique({
+//         where: {name: input.climbName}
+//     })
 
-}
+// }
 
 
 export const climbGetAll = async (

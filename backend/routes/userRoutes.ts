@@ -17,10 +17,11 @@ router.post('/userLogin', userControllers.userLogin);
 // user decides to delete their account
 router.delete('/userDelete', requireAuth, userControllers.userDelete);
 
-router.get('/getCurrentUser', requireAuth, userControllers.getCurrentUser);
+//router.get('/getCurrentUser', requireAuth, userControllers.getCurrentUser);
 
-router.put('/userInfoUpdate', requireAuth, userControllers.userInfoUpdate);
+//router.put('/userInfoUpdate', requireAuth, userControllers.userInfoUpdate);
 
+// req.body will have id and climbid
 router.post('/userTickClimb', requireAuth, userControllers.userTickClimb);
 
 export default router;

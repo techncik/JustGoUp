@@ -16,7 +16,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/gym', gymRoutes);
 app.use('/api/climb', climbRoutes);
 
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
+const port = process.env.PORT ? Number(process.env.PORT) : 4000;
+app.listen(port, '0.0.0.0', () => {
   console.log(`API listening on http://localhost:${port}`);
 });

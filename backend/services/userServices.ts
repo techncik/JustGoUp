@@ -109,12 +109,12 @@ export const userTickClimb = async(
             id: input.id
         },
         data: {
-            tickedId: { //TODO Believe this error just comes from prisma not being migrated
-                push: input.climbId,
+            ticked: { //TODO Believe this error just comes from prisma not being migrated
+                connect: { id: input.climbId}
             },
         },
-    })
-    
+    });
+     
     if (!updateUser) {
         throw new Error('Something went wrong');
     }
