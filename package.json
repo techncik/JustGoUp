@@ -6,5 +6,8 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.18"
+  },
+  "scripts": {
+    "reset-db": "npm --prefix backend run reset-db"
   }
 }

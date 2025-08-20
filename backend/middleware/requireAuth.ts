@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export const requireAuth: RequestHandler = (
     req: Request, 
@@ -11,6 +11,12 @@ export const requireAuth: RequestHandler = (
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+
+
+        // TODO: Remove this
+        if (!authHeader) {
+            res.status(401).json({error: 'No Auth header'})
+        }
         res.status(401).json({error: 'Auth header missing or malformed'});
         return;
     }
